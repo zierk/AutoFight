@@ -1,6 +1,6 @@
-AutoFight.Debug = not AutoFight.Debug
+AutoFight.Config.Debug = not AutoFight.Config.Debug
 
-if AutoFight.Debug then
+if AutoFight.Config.Debug then
     AutoFight.echo("Debug: <green>ON<reset>")
     AutoFight.debug("Debug Test!")
 else
