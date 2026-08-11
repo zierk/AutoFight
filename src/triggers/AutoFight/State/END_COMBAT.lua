@@ -1,11 +1,7 @@
--- Extracted from AutoFight.mpackage
--- Mudlet Trigger: END COMBAT
--- Regex: ^\* (.*) is DEAD!$
-
-AutoFight.cancelDefense()
+AutoFight.Defense.cancel()
 
 AutoFight.State.Recovery = false
-AutoFight.InCombat = false
+AutoFight.State.InCombat = false
 AutoFight.State.PowerStruggle = false
 AutoFight.State.TechBlock = false
 AutoFight.State.TechAttackActive = false
