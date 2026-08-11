@@ -1,3 +1,0 @@
--- Extracted from AutoFight.mpackage
--- Mudlet Trigger: SPIRITBOMB FIRE
--- Regex: ^\* Your Spirit Bomb is READY TO FIRE!$

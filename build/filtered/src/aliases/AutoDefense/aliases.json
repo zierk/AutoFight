@@ -1,9 +1,0 @@
-[
-       {
-              "name": "DEBUG",
-              "isActive": "yes",
-              "regex": "^ad debug$",
-              "script": "",
-              "isFolder": "no"
-       }
-]
