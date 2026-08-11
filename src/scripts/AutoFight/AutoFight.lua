@@ -13,10 +13,10 @@ AutoFight.Stamina = AutoFight.Stamina or 100
 
 
 
-AutoFight.DefensePriority = AutoFight.DefensePriority or {}
-AutoFight.StaminaThreshold = AutoFight.StaminaThreshold or 75
+AutoFight.Config.DefensePriority = AutoFight.Config.DefensePriority or {}
+AutoFight.Config.StaminaThreshold = AutoFight.Config.StaminaThreshold or 75
 
-AutoFight.DefensePriority.Recovery = {
+AutoFight.Config.DefensePriority.Recovery = {
     "jump",
     "duck",
     "dodge left",
@@ -27,7 +27,7 @@ AutoFight.DefensePriority.Recovery = {
     "deflect",
 }
 
-AutoFight.DefensePriority.Tech = {
+AutoFight.Config.DefensePriority.Tech = {
     "parry high",
     "parry low",
     "dodge left",
@@ -39,23 +39,23 @@ AutoFight.DefensePriority.Tech = {
 }
 
 function AutoFight.getDefensePriority()
-    if AutoFight.Stamina < AutoFight.StaminaThreshold then
+    if AutoFight.Stamina < AutoFight.Config.StaminaThreshold then
         AutoFight.debug("Low stamina - using recovery defense priority.")
-        return AutoFight.DefensePriority.Recovery
+        return AutoFight.Config.DefensePriority.Recovery
     end
 
     AutoFight.debug("Stamina healthy - using TECH BLOCK priority.")
-    return AutoFight.DefensePriority.Tech
+    return AutoFight.Config.DefensePriority.Tech
 end
 
 
-AutoFight.AttackPriority = {
+AutoFight.Config.AttackPriority = {
     "kamehameha",
     "blast",
     "barrage",
 }
 
-AutoFight.ComboFollowupPriority = {
+AutoFight.Config.ComboFollowupPriority = {
     "zanzoken",
     "renzoku",
     "kame",
@@ -63,7 +63,7 @@ AutoFight.ComboFollowupPriority = {
 }
 
 function AutoFight.usePriorityAttack()
-    for _, attack in ipairs(AutoFight.AttackPriority) do
+    for _, attack in ipairs(AutoFight.Config.AttackPriority) do
         if not AutoFight.TriedAttacks[attack] then
             AutoFight.TriedAttacks[attack] = true
             AutoFight.debug("Trying attack: " .. attack)

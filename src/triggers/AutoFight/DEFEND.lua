@@ -1,7 +1,3 @@
--- Extracted from AutoFight.mpackage
--- Mudlet Trigger: DEFEND
--- Regex: ^\* (.*)\.\.\. \((.*)\)$
-
 if AutoFight.State.Recovery then
     AutoFight.State.Recovery = false
 
@@ -37,4 +33,4 @@ if not defense then
     return
 end
 
-AutoFight.scheduleDefense(defense, 2.5)
+AutoFight.scheduleDefense(defense, AutoFight.Config.DefenseDelay)
