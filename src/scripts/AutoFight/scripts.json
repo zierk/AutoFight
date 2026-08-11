@@ -4,5 +4,11 @@
               "isActive": "yes",
               "script": "",
               "isFolder": "no"
+       },
+       {
+              "name": "State",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
        }
 ]
