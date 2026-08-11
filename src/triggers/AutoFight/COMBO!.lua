@@ -2,12 +2,12 @@
 -- Mudlet Trigger: COMBO!
 -- Regex: ^Combination!\s*\(\s*(.*?)\s*\)$
 
-if not AutoFight.TechBlock then
+if not AutoFight.State.TechBlock then
     return
 end
 
-AutoFight.TechBlock = false
-AutoFight.TechAttackActive = false
+AutoFight.State.TechBlock = false
+AutoFight.State.TechAttackActive = false
 
 AutoFight.debug("COMBO detected.")
 

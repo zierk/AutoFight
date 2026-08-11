@@ -4,7 +4,7 @@
 
 local attack = matches[2]
 
-if not AutoFight.TechAttackActive then
+if not AutoFight.State.TechAttackActive then
     AutoFight.debug("Ignoring priority fallback for: " .. attack)
     return
 end

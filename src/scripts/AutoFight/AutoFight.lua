@@ -1,14 +1,8 @@
--- Extracted from AutoFight.mpackage
--- Mudlet Script: AutoFight
-
 AutoFight = AutoFight or {}
 
+AutoFight.State = AutoFight.State or {}
+
 AutoFight.Debug = AutoFight.Debug or false
-AutoFight.InCombat = AutoFight.InCombat or false
-AutoFight.PowerStruggle = AutoFight.PowerStruggle or false
-AutoFight.Recovery = AutoFight.Recovery or false
-AutoFight.TechBlock = AutoFight.TechBlock or false
-AutoFight.TechAttackActive = AutoFight.TechAttackActive or false
 
 
 AutoFight.DefenseTimer = AutoFight.DefenseTimer or nil
@@ -17,8 +11,6 @@ AutoFight.TriedAttacks = AutoFight.TriedAttacks or {}
 
 AutoFight.Stamina = AutoFight.Stamina or 100
 
-AutoFight.Renzoku = AutoFight.Renzoku or false
-AutoFight.Barrage = AutoFight.Barrage or false
 
 
 AutoFight.DefensePriority = AutoFight.DefensePriority or {}
@@ -90,17 +82,17 @@ function AutoFight.usePriorityAttack()
 end
 
 function AutoFight.sendDefense(defense)
-    if AutoFight.PowerStruggle then
+    if AutoFight.State.PowerStruggle then
         AutoFight.debug("Defense cancelled - PowerStruggle active.")
         return
     end
 
-    if AutoFight.Renzoku then
+    if AutoFight.State.Renzoku then
         AutoFight.debug("Defense cancelled - Renzoku active.")
         return
     end
     
-    if AutoFight.Barrage then
+    if AutoFight.State.Barrage then
         AutoFight.debug("Defense cancelled - Barrage active.")
         return
     end

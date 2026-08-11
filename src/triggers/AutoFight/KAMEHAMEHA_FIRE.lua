@@ -2,9 +2,9 @@
 -- Mudlet Trigger: KAMEHAMEHA FIRE
 -- Regex: ^\* Your Kamehameha is READY TO FIRE!$
 
-if not AutoFight.TechAttackActive then return end
+if not AutoFight.State.TechAttackActive then return end
 
-AutoFight.TechAttackActive = false
+AutoFight.State.TechAttackActive = false
 
 AutoFight.debug("Firing Kamehameha.")
 send("kamehameha")

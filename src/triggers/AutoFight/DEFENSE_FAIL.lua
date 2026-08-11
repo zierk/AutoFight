@@ -4,5 +4,5 @@
 
 if not AutoFight.InCombat then return end
 
-AutoFight.Recovery = true
-AutoFight.debug("Defense Failure Detected! Recovery Mode: " .. tostring(AutoFight.Recovery))
+AutoFight.State.Recovery = true
+AutoFight.debug("Defense Failure Detected! Recovery Mode: " .. tostring(AutoFight.State.Recovery))

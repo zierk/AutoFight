@@ -2,12 +2,12 @@
 -- Mudlet Trigger: DEFEND
 -- Regex: ^\* (.*)\.\.\. \((.*)\)$
 
-if AutoFight.Recovery then
-    AutoFight.Recovery = false
+if AutoFight.State.Recovery then
+    AutoFight.State.Recovery = false
 
     AutoFight.debug(
         "Allowing hit, will resume defense next round. Recovery Mode: "
-        .. tostring(AutoFight.Recovery)
+        .. tostring(AutoFight.State.Recovery)
     )
 
     AutoFight.cancelDefense()

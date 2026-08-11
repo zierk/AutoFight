@@ -4,13 +4,13 @@
 
 AutoFight.cancelDefense()
 
-AutoFight.Recovery = false
+AutoFight.State.Recovery = false
 AutoFight.InCombat = false
-AutoFight.PowerStruggle = false
-AutoFight.TechBlock = false
-AutoFight.TechAttackActive = false
+AutoFight.State.PowerStruggle = false
+AutoFight.State.TechBlock = false
+AutoFight.State.TechAttackActive = false
 
-AutoFight.Renzoku = false
-AutoFight.Barrage = false
+AutoFight.State.Renzoku = false
+AutoFight.State.Barrage = false
 
 AutoFight.debug("End combat.")

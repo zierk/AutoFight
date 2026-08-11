@@ -3,5 +3,5 @@
 -- Regex: ^You finish your renzoku attack!$
 -- Regex: ^Your renzoku fizzles and dissipates!$
 
-AutoFight.Renzoku = false
+AutoFight.State.Renzoku = false
 AutoFight.debug("Renzoku finished.")
