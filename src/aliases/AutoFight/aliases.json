@@ -2,7 +2,7 @@
        {
               "name": "DEBUG",
               "isActive": "yes",
-              "regex": "^ad debug$",
+              "regex": "^af debug$",
               "script": "",
               "isFolder": "no"
        }

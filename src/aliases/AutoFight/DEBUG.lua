@@ -1,6 +1,3 @@
--- Extracted from AutoFight.mpackage
--- Mudlet Alias: DEBUG
-
 AutoFight.Debug = not AutoFight.Debug
 
 if AutoFight.Debug then
