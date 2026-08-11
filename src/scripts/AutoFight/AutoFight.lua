@@ -1,8 +1,12 @@
 AutoFight = AutoFight or {}
 
+AutoFight.Config = AutoFight.Config or {}
 AutoFight.State = AutoFight.State or {}
-
-AutoFight.Debug = AutoFight.Debug or false
+AutoFight.Defense = AutoFight.Defense or {}
+AutoFight.Attack = AutoFight.Attack or {}
+AutoFight.Combo = AutoFight.Combo or {}
+AutoFight.TechBlock = AutoFight.TechBlock or {}
+AutoFight.PowerStruggle = AutoFight.PowerStruggle or {}
 
 
 AutoFight.DefenseTimer = AutoFight.DefenseTimer or nil
@@ -13,30 +17,7 @@ AutoFight.Stamina = AutoFight.Stamina or 100
 
 
 
-AutoFight.Config.DefensePriority = AutoFight.Config.DefensePriority or {}
-AutoFight.Config.StaminaThreshold = AutoFight.Config.StaminaThreshold or 75
 
-AutoFight.Config.DefensePriority.Recovery = {
-    "jump",
-    "duck",
-    "dodge left",
-    "dodge right",
-    "parry high",
-    "parry low",
-    "sweep",
-    "deflect",
-}
-
-AutoFight.Config.DefensePriority.Tech = {
-    "parry high",
-    "parry low",
-    "dodge left",
-    "dodge right",
-    "jump",
-    "duck",
-    "sweep",
-    "deflect",
-}
 
 function AutoFight.getDefensePriority()
     if AutoFight.Stamina < AutoFight.Config.StaminaThreshold then
@@ -48,19 +29,6 @@ function AutoFight.getDefensePriority()
     return AutoFight.Config.DefensePriority.Tech
 end
 
-
-AutoFight.Config.AttackPriority = {
-    "kamehameha",
-    "blast",
-    "barrage",
-}
-
-AutoFight.Config.ComboFollowupPriority = {
-    "zanzoken",
-    "renzoku",
-    "kame",
-    "blast",
-}
 
 function AutoFight.usePriorityAttack()
     for _, attack in ipairs(AutoFight.Config.AttackPriority) do
@@ -156,9 +124,9 @@ function AutoFight.echo(message)
 end
 
 function AutoFight.debug(message)
-  if not AutoFight.Debug then
+  if not AutoFight.Config.Debug then
     return
   end
   
-  cecho("\n<magenta>[<cyan>AutoFight<magenta>]<reset> " .. tostring(message).."\n")
+  cecho("\n<yellow>[<green>AutoFight<yellow>]<reset> " .. tostring(message).."\n")
 end

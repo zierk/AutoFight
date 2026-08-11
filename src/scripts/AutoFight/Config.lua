@@ -1,5 +1,7 @@
 AutoFight.Config = AutoFight.Config or {}
 
+AutoFight.Config.Debug = AutoFight.Config.Debug or false
+
 --------------------------------------------------
 -- DEFENSE
 --------------------------------------------------
