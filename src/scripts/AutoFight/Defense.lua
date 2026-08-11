@@ -1,0 +1,122 @@
+AutoFight.Defense = AutoFight.Defense or {}
+
+AutoFight.Defense.Timer = AutoFight.Defense.Timer or nil
+AutoFight.Defense.Pending = AutoFight.Defense.Pending or nil
+
+function AutoFight.Defense.getPriority()
+    if AutoFight.State.Stamina < AutoFight.Config.StaminaThreshold then
+        AutoFight.debug("Low stamina - using recovery defense priority.")
+        return AutoFight.Config.DefensePriority.Recovery
+    end
+
+    AutoFight.debug("Stamina healthy - using TECH BLOCK priority.")
+    return AutoFight.Config.DefensePriority.Tech
+end
+
+function AutoFight.Defense.send(defense)
+    if AutoFight.State.PowerStruggle then
+        AutoFight.debug("Defense cancelled - PowerStruggle active.")
+        return
+    end
+
+    if AutoFight.State.Renzoku then
+        AutoFight.debug("Defense cancelled - Renzoku active.")
+        return
+    end
+
+    if AutoFight.State.Barrage then
+        AutoFight.debug("Defense cancelled - Barrage active.")
+        return
+    end
+
+    AutoFight.debug("Defense Action: " .. tostring(defense))
+    send(defense)
+end
+
+function AutoFight.Defense.schedule(defense, delay)
+
+    if AutoFight.Defense.Timer then
+        killTimer(AutoFight.Defense.Timer)
+
+        AutoFight.debug(
+            "Cancelled previous defense: "
+            .. tostring(AutoFight.Defense.Pending)
+        )
+    end
+
+    AutoFight.Defense.Timer = nil
+    AutoFight.Defense.Pending = defense
+
+    AutoFight.debug(
+        "Scheduled defense: "
+        .. tostring(defense)
+        .. " in "
+        .. tostring(delay)
+        .. "s"
+    )
+
+    if delay <= 0 then
+        AutoFight.Defense.Pending = nil
+        AutoFight.Defense.send(defense)
+        return
+    end
+
+    local scheduledDefense = defense
+
+    AutoFight.Defense.Timer = tempTimer(delay, function()
+        AutoFight.Defense.Timer = nil
+        AutoFight.Defense.Pending = nil
+
+        AutoFight.Defense.send(scheduledDefense)
+    end)
+end
+
+function AutoFight.Defense.cancel()
+    if AutoFight.Defense.Timer then
+        killTimer(AutoFight.Defense.Timer)
+        AutoFight.Defense.Timer = nil
+    end
+
+    AutoFight.Defense.Pending = nil
+end
+
+function AutoFight.Defense.handle(defenseString, delay)
+
+    if AutoFight.State.Recovery then
+        AutoFight.State.Recovery = false
+
+        AutoFight.debug(
+            "Allowing hit, will resume defense next round."
+        )
+
+        AutoFight.Defense.cancel()
+        return
+    end
+
+    local defenses = {}
+
+    for command in defenseString:gmatch("[^/]+") do
+        command = command:match("^%s*(.-)%s*$")
+        defenses[command] = true
+    end
+
+    local priority = AutoFight.Defense.getPriority()
+    local defense = nil
+
+    for _, command in ipairs(priority) do
+        if defenses[command] then
+            defense = command
+            break
+        end
+    end
+
+    if not defense then
+        AutoFight.debug("No matching defense found.")
+        return
+    end
+
+    AutoFight.Defense.schedule(
+        defense,
+        delay or AutoFight.Config.DefenseDelay
+    )
+end

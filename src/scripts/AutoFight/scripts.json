@@ -16,5 +16,11 @@
               "isActive": "yes",
               "script": "",
               "isFolder": "no"
+       },
+       {
+              "name": "Defense",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
        }
 ]
