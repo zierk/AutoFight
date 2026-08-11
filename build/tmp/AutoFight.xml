@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+  <ScriptPackage>
+    <ScriptGroup isActive="yes" isFolder="yes">
+  <name>AutoFight</name>
+      <script/>
+  <packageName/>
+<eventHandlerList>
+</eventHandlerList>
+      <Script isActive="yes" isFolder="no">
+  <name>AutoFight</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Script: AutoFight
+
+AutoFight = AutoFight or {}
+
+AutoFight.Debug = AutoFight.Debug or false
+AutoFight.InCombat = AutoFight.InCombat or false
+AutoFight.PowerStruggle = AutoFight.PowerStruggle or false
+AutoFight.Recovery = AutoFight.Recovery or false
+AutoFight.TechBlock = AutoFight.TechBlock or false
+AutoFight.TechAttackActive = AutoFight.TechAttackActive or false
+
+
+AutoFight.DefenseTimer = AutoFight.DefenseTimer or nil
+AutoFight.PendingDefense = AutoFight.PendingDefense or nil
+AutoFight.TriedAttacks = AutoFight.TriedAttacks or {}
+
+AutoFight.Stamina = AutoFight.Stamina or 100
+
+AutoFight.Renzoku = AutoFight.Renzoku or false
+AutoFight.Barrage = AutoFight.Barrage or false
+
+
+AutoFight.DefensePriority = AutoFight.DefensePriority or {}
+AutoFight.StaminaThreshold = AutoFight.StaminaThreshold or 75
+
+AutoFight.DefensePriority.Recovery = {
+    "jump",
+    "duck",
+    "dodge left",
+    "dodge right",
+    "parry high",
+    "parry low",
+    "sweep",
+    "deflect",
+}
+
+AutoFight.DefensePriority.Tech = {
+    "parry high",
+    "parry low",
+    "dodge left",
+    "dodge right",
+    "jump",
+    "duck",
+    "sweep",
+    "deflect",
+}
+
+function AutoFight.getDefensePriority()
+    if AutoFight.Stamina &lt; AutoFight.StaminaThreshold then
+        AutoFight.debug("Low stamina - using recovery defense priority.")
+        return AutoFight.DefensePriority.Recovery
+    end
+
+    AutoFight.debug("Stamina healthy - using TECH BLOCK priority.")
+    return AutoFight.DefensePriority.Tech
+end
+
+
+AutoFight.AttackPriority = {
+    "kamehameha",
+    "blast",
+    "barrage",
+}
+
+AutoFight.ComboFollowupPriority = {
+    "zanzoken",
+    "renzoku",
+    "kame",
+    "blast",
+}
+
+function AutoFight.usePriorityAttack()
+    for _, attack in ipairs(AutoFight.AttackPriority) do
+        if not AutoFight.TriedAttacks[attack] then
+            AutoFight.TriedAttacks[attack] = true
+            AutoFight.debug("Trying attack: " .. attack)
+
+            if attack == "kamehameha" then
+                enableTrigger("KAMEHAMEHA FIRE")
+            end
+
+            send(attack)
+            return
+        end
+    end
+
+    AutoFight.debug("No priority attacks left. Defaulting to sweep.")
+    send("sweep")
+end
+
+function AutoFight.sendDefense(defense)
+    if AutoFight.PowerStruggle then
+        AutoFight.debug("Defense cancelled - PowerStruggle active.")
+        return
+    end
+
+    if AutoFight.Renzoku then
+        AutoFight.debug("Defense cancelled - Renzoku active.")
+        return
+    end
+    
+    if AutoFight.Barrage then
+        AutoFight.debug("Defense cancelled - Barrage active.")
+        return
+    end
+
+    send(defense)
+end
+
+function AutoFight.scheduleDefense(defense, delay)
+
+    -- Cancel previous pending defense
+    if AutoFight.DefenseTimer then
+        killTimer(AutoFight.DefenseTimer)
+
+        AutoFight.debug(
+            "Cancelled previous defense: "
+            .. tostring(AutoFight.PendingDefense)
+        )
+    end
+
+    AutoFight.DefenseTimer = nil
+    AutoFight.PendingDefense = defense
+
+    AutoFight.debug(
+        "Scheduled defense: "
+        .. tostring(defense)
+        .. " in "
+        .. tostring(delay)
+        .. "s"
+    )
+
+    -- Immediate defense
+    if delay &lt;= 0 then
+        AutoFight.PendingDefense = nil
+        AutoFight.sendDefense(defense)
+        return
+    end
+
+    -- IMPORTANT: this timer remembers its own defense
+    local scheduledDefense = defense
+
+    AutoFight.DefenseTimer = tempTimer(delay, function()
+
+        AutoFight.DefenseTimer = nil
+        AutoFight.PendingDefense = nil
+
+        AutoFight.sendDefense(scheduledDefense)
+    end)
+end
+
+function AutoFight.cancelDefense()
+    if AutoFight.DefenseTimer then
+        killTimer(AutoFight.DefenseTimer)
+        AutoFight.DefenseTimer = nil
+    end
+
+    AutoFight.PendingDefense = nil
+end
+
+function AutoFight.echo(message)
+  cecho("\n&lt;magenta&gt;[&lt;cyan&gt;AutoFight&lt;magenta&gt;]&lt;reset&gt; " .. tostring(message).."\n")
+end
+
+function AutoFight.debug(message)
+  if not AutoFight.Debug then
+    return
+  end
+  
+  cecho("\n&lt;magenta&gt;[&lt;cyan&gt;AutoFight&lt;magenta&gt;]&lt;reset&gt; " .. tostring(message).."\n")
+end
+</script>
+  <packageName/>
+<eventHandlerList>
+</eventHandlerList>
+</Script>
+</ScriptGroup>
+</ScriptPackage>
+  <AliasPackage>
+    <AliasGroup isActive="yes" isFolder="yes">
+  <name>AutoFight</name>
+      <script/>
+  <command/>
+  <packageName/>
+  <regex/>
+      <Alias isActive="yes" isFolder="no">
+  <name>DEBUG</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Alias: DEBUG
+
+AutoFight.Debug = not AutoFight.Debug
+
+if AutoFight.Debug then
+    AutoFight.echo("Debug: &lt;green&gt;ON&lt;reset&gt;")
+    AutoFight.debug("Debug Test!")
+else
+    AutoFight.echo("Debug: &lt;red&gt;OFF&lt;reset&gt;")
+end
+</script>
+  <command/>
+  <packageName/>
+  <regex>^ad debug$</regex>
+</Alias>
+</AliasGroup>
+</AliasPackage>
+  <TimerPackage>
+</TimerPackage>
+  <TriggerPackage>
+    <TriggerGroup isActive="yes" isFolder="yes" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>AutoFight</name>
+      <script/>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+      <regexCodeList>
+</regexCodeList>
+      <regexCodePropertyList>
+</regexCodePropertyList>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>COMBAT PROMPT</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: COMBAT PROMPT
+-- Regex: ^&lt;(\d+(?:\.\d+)?)%&gt; / &lt;[^&gt;]+&gt; / vs\. &lt;[^&gt;]+&gt;$
+
+AutoFight.Stamina = tonumber(matches[2])
+
+if not AutoFight.InCombat then
+    AutoFight.InCombat = true
+    AutoFight.debug("Combat state: ON")
+end
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^&lt;(\d+(?:\.\d+)?)%&gt; / &lt;[^&gt;]+&gt; / vs\. &lt;[^&gt;]+&gt;$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>DEFEND</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: DEFEND
+-- Regex: ^\* (.*)\.\.\. \((.*)\)$
+
+if AutoFight.Recovery then
+    AutoFight.Recovery = false
+
+    AutoFight.debug(
+        "Allowing hit, will resume defense next round. Recovery Mode: "
+        .. tostring(AutoFight.Recovery)
+    )
+
+    AutoFight.cancelDefense()
+    return
+end
+
+local defenses = {}
+
+for command in matches[3]:gmatch("[^/]+") do
+    command = command:match("^%s*(.-)%s*$")
+    defenses[command] = true
+end
+
+local priority = AutoFight.getDefensePriority()
+
+local defense = nil
+
+for _, command in ipairs(priority) do
+    if defenses[command] then
+        defense = command
+        break
+    end
+end
+
+if not defense then
+    AutoFight.debug("ERROR: No matching defense found.")
+    return
+end
+
+AutoFight.scheduleDefense(defense, 2.5)
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* (.*)\.\.\. \((.*)\)$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>TIMED DEFENSE</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: TIMED DEFENSE
+-- Regex: ^\* (.*), (\d+(?:\.\d+)?)s to defend! \(([^)]+)\)(?: .*)?$
+
+local defendTime = tonumber(matches[3])
+local defenses = {}
+
+for command in matches[4]:gmatch("[^/]+") do
+    command = command:match("^%s*(.-)%s*$")
+    defenses[command] = true
+end
+
+local priority = {
+    "dodge left",
+    "dodge right",
+    "jump",
+    "duck",
+    "parry high",
+    "parry low",
+    "sweep",
+    "deflect",
+}
+
+local defense = nil
+
+for _, command in ipairs(priority) do
+    if defenses[command] then
+        defense = command
+        break
+    end
+end
+
+if defense then
+    AutoFight.debug(
+        "Timed defense selected: "
+        .. defense
+        .. " in "
+        .. defendTime
+        .. "s"
+    )
+
+    AutoFight.scheduleDefense(defense, defendTime)
+end
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* (.*), (\d+(?:\.\d+)?)s to defend! \(([^)]+)\)(?: .*)?$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>DEFENSE FAIL</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: DEFENSE FAIL
+-- Regex: ^You parry the air!$
+
+if not AutoFight.InCombat then return end
+
+AutoFight.Recovery = true
+AutoFight.debug("Defense Failure Detected! Recovery Mode: " .. tostring(AutoFight.Recovery))
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^You parry the air!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>TECH BLOCK STUN</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: TECH BLOCK STUN
+-- Regex: ^\* TECH BLOCK bonus! (.*) is stunned!$
+
+AutoFight.TechBlock = true
+AutoFight.TechAttackActive = false
+AutoFight.TriedAttacks = {}
+
+tempTimer(1, function()
+    if AutoFight.TechBlock then
+        AutoFight.TechBlock = false
+        AutoFight.TechAttackActive = true
+
+        AutoFight.debug("No COMBO detected - starting Tech attack.")
+        AutoFight.usePriorityAttack()
+    end
+end)
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* TECH BLOCK bonus! (.*) is stunned!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>TECH BLOCK ATTACK HANDLER</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: TECH BLOCK ATTACK HANDLER
+-- Regex: ^You can't use (.+) for another \d+(?:\.\d+)? second\(s\)!$
+
+local attack = matches[2]
+
+if not AutoFight.TechAttackActive then
+    AutoFight.debug("Ignoring priority fallback for: " .. attack)
+    return
+end
+
+AutoFight.debug(attack .. " unavailable - trying next priority.")
+
+AutoFight.usePriorityAttack()
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^You can't use (.+) for another \d+(?:\.\d+)? second\(s\)!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>COMBO!</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: COMBO!
+-- Regex: ^Combination!\s*\(\s*(.*?)\s*\)$
+
+if not AutoFight.TechBlock then
+    return
+end
+
+AutoFight.TechBlock = false
+AutoFight.TechAttackActive = false
+
+AutoFight.debug("COMBO detected.")
+
+local combo = matches[2]
+
+local function runCombo()
+    local startDelay = 0.5
+    local commandDelay = 0.25
+    local i = 0
+
+    AutoFight.debug("Starting combo: " .. combo)
+
+    for command in combo:gmatch("%S+") do
+        local cmd = command
+        local delay = startDelay + (i * commandDelay)
+
+        tempTimer(delay, function()
+            send(cmd)
+        end)
+
+        i = i + 1
+    end
+end
+
+runCombo()
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^Combination!\s*\(\s*(.*?)\s*\)$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>COMBO FOLLOWUP</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: COMBO FOLLOWUP
+-- Regex: ^\* Your .* sends (.*) flying (north|south|east|west|northeast|northwest|southeast|southwest)!$
+
+local direction = matches[3]
+
+AutoFight.debug("Target sent flying " .. direction)
+
+AutoFight.useComboFollowup()
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* Your .* sends (.*) flying (north|south|east|west|northeast|northwest|southeast|southwest)!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>RENZOKU START</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: RENZOKU START
+-- Regex: ^\* You extend your hand out and aim at (.*)\.\.\.$
+
+AutoFight.Renzoku = true
+AutoFight.debug("Renzoku started against: " .. matches[2])
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* You extend your hand out and aim at (.*)\.\.\.$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>RENZOKU STOP</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: RENZOKU STOP
+-- Regex: ^You finish your renzoku attack!$
+-- Regex: ^Your renzoku fizzles and dissipates!$
+
+AutoFight.Renzoku = false
+AutoFight.debug("Renzoku finished.")
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^You finish your renzoku attack!$</string>
+<string>^Your renzoku fizzles and dissipates!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>KAMEHAMEHA FIRE</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: KAMEHAMEHA FIRE
+-- Regex: ^\* Your Kamehameha is READY TO FIRE!$
+
+if not AutoFight.TechAttackActive then return end
+
+AutoFight.TechAttackActive = false
+
+AutoFight.debug("Firing Kamehameha.")
+send("kamehameha")
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* Your Kamehameha is READY TO FIRE!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>SPIRITBOMB FIRE</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: SPIRITBOMB FIRE
+-- Regex: ^\* Your Spirit Bomb is READY TO FIRE!$
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand>spiritbomb</mCommand>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* Your Spirit Bomb is READY TO FIRE!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>END COMBAT</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: END COMBAT
+-- Regex: ^\* (.*) is DEAD!$
+
+AutoFight.cancelDefense()
+
+AutoFight.Recovery = false
+AutoFight.InCombat = false
+AutoFight.PowerStruggle = false
+AutoFight.TechBlock = false
+AutoFight.TechAttackActive = false
+
+AutoFight.Renzoku = false
+AutoFight.Barrage = false
+
+AutoFight.debug("End combat.")
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* (.*) is DEAD!$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>BARRAGE START</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: BARRAGE START
+-- Regex: ^\* You begin a barrage by retracting your right arm\.\.\.$
+
+AutoFight.Barrage = true
+AutoFight.debug("Barrage channel started.")
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^\* You begin a barrage by retracting your right arm\.\.\.$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+      <Trigger isActive="yes" isFolder="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isColorTrigger="" isColorTriggerFg="" isColorTriggerBg="">
+  <name>BARRAGE STOP</name>
+        <script>-- Extracted from AutoFight.mpackage
+-- Mudlet Trigger: BARRAGE STOP
+-- Regex: ^You cease your melee barrage\.$
+
+AutoFight.Barrage = false
+AutoFight.debug("Barrage channel ended.")
+</script>
+  <triggerType>0</triggerType>
+  <conditonLineDelta>0</conditonLineDelta>
+  <mStayOpen>0</mStayOpen>
+  <mCommand/>
+  <packageName/>
+  <path>AutoFight</path>
+  <mFgColor>#ff0000</mFgColor>
+  <mBgColor>#ffff00</mBgColor>
+  <mSoundFile/>
+  <colorTriggerFgColor>#000000</colorTriggerFgColor>
+  <colorTriggerBgColor>#000000</colorTriggerBgColor>
+        <regexCodeList>
+<string>^You cease your melee barrage\.$</string>
+        </regexCodeList>
+        <regexCodePropertyList>
+<integer>1</integer>
+        </regexCodePropertyList>
+</Trigger>
+</TriggerGroup>
+</TriggerPackage>
+  <KeyPackage>
+</KeyPackage>
+</MudletPackage>
