@@ -6,4 +6,8 @@ AutoFight.State.EnemyPL = AutoFight.parseNumber(matches[5])
 if not AutoFight.State.InCombat then
     AutoFight.State.InCombat = true
     AutoFight.debug("Combat state: ON")
+
+    AutoFight.Kaioken.start()
 end
+
+AutoFight.Kaioken.checkStamina()

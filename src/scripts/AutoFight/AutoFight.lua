@@ -7,6 +7,7 @@ AutoFight.Attack = AutoFight.Attack or {}
 AutoFight.Combo = AutoFight.Combo or {}
 AutoFight.TechBlock = AutoFight.TechBlock or {}
 AutoFight.PowerStruggle = AutoFight.PowerStruggle or {}
+AutoFight.Kaioken = AutoFight.Kaioken or {}
 
 AutoFight.Settings = AutoFight.Settings or {}
 AutoFight.SettingsFile = getMudletHomeDir() .. "/AutoFightSettings.lua"

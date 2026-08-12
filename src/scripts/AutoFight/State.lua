@@ -15,3 +15,6 @@ AutoFight.State.Barrage = AutoFight.State.Barrage or false
 
 AutoFight.State.PowerStruggle = AutoFight.State.PowerStruggle or false
 AutoFight.State.PowerStruggleDistance = AutoFight.State.PowerStruggleDistance or 0
+
+AutoFight.State.Kaioken = AutoFight.State.Kaioken or false
+AutoFight.State.KaiokenLevel = AutoFight.State.KaiokenLevel or 0
