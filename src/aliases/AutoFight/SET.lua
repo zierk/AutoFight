@@ -1,0 +1,1 @@
+AutoFight.setSetting(matches[2],matches[3])

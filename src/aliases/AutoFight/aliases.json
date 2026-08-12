@@ -5,5 +5,12 @@
               "regex": "^af debug$",
               "script": "",
               "isFolder": "no"
+       },
+       {
+              "name": "SET",
+              "isActive": "yes",
+              "regex": "^af set (\\w+) (.+)$",
+              "script": "",
+              "isFolder": "no"
        }
 ]

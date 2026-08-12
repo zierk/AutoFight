@@ -2,65 +2,48 @@ AutoFight.Config = AutoFight.Config or {}
 
 AutoFight.Config.Debug = AutoFight.Config.Debug or false
 
---------------------------------------------------
--- DEFENSE
---------------------------------------------------
-
-AutoFight.Config.StaminaThreshold = 75
-
-AutoFight.Config.DefensePriority = {}
-
-AutoFight.Config.DefensePriority.Recovery = {
-    "jump",
-    "duck",
-    "dodge left",
-    "dodge right",
-    "parry high",
-    "parry low",
-    "sweep",
-    "deflect",
-}
-
-AutoFight.Config.DefensePriority.Tech = {
-    "parry high",
-    "parry low",
-    "dodge left",
-    "dodge right",
-    "jump",
-    "duck",
-    "sweep",
-    "deflect",
-}
-
---------------------------------------------------
--- ATTACK
---------------------------------------------------
-
-AutoFight.Config.AttackPriority = {
-    "kamehameha",
-    "blast",
-    "barrage",
-}
-
-AutoFight.Config.ComboFollowupPriority = {
-    "zanzoken",
-    "renzoku",
-    "kame",
-    "blast",
-}
-
---------------------------------------------------
--- RECOVERY / POWER UP
---------------------------------------------------
-
-AutoFight.Config.PowerUpPLThreshold = 50
-AutoFight.Config.PowerUpStaminaThreshold = 75
-
---------------------------------------------------
--- TIMING
---------------------------------------------------
-
-AutoFight.Config.DefenseDelay = 2.5
 AutoFight.Config.ComboStartDelay = 0.5
 AutoFight.Config.ComboCommandDelay = 0.25
 AutoFight.Config.TechBlockWindow = 5
+
+AutoFight.Config.Defaults = {
+    combos = true,
+    defense = true,
+    attack = true,
+
+    staminathreshold = 75,
+    defensedelay = 2.5,
+
+    defensepriority = {
+        "parry high",
+        "parry low",
+        "dodge left",
+        "dodge right",
+        "jump",
+        "duck",
+    },
+
+    recoverypriority = {
+        "jump",
+        "duck",
+        "dodge left",
+        "dodge right",
+        "parry high",
+        "parry low",
+    },
+
+    attackpriority = {
+        "kamehameha",
+        "blast",
+        "barrage",
+    },
+
+    combofollowuppriority = {
+        "zanzoken",
+        "renzoku",
+        "kame",
+        "blast",
+    },
+}
+
+AutoFight.loadSettings()

@@ -4,16 +4,26 @@ AutoFight.Defense.Timer = AutoFight.Defense.Timer or nil
 AutoFight.Defense.Pending = AutoFight.Defense.Pending or nil
 
 function AutoFight.Defense.getPriority()
-    if AutoFight.State.Stamina < AutoFight.Config.StaminaThreshold then
+    if AutoFight.State.Stamina
+        < AutoFight.Settings.staminathreshold then
+
         AutoFight.debug("Low stamina - using recovery defense priority.")
-        return AutoFight.Config.DefensePriority.Recovery
+
+        return AutoFight.Settings.recoverypriority
     end
 
     AutoFight.debug("Stamina healthy - using TECH BLOCK priority.")
-    return AutoFight.Config.DefensePriority.Tech
+
+    return AutoFight.Settings.defensepriority
 end
 
 function AutoFight.Defense.send(defense)
+
+    if not AutoFight.Settings.defense then
+        AutoFight.debug("Defense cancelled - AutoDefense disabled.")
+        return
+    end
+
     if AutoFight.State.Stunned then
         AutoFight.debug("Defense cancelled - stunned.")
         return
@@ -87,6 +97,10 @@ end
 
 function AutoFight.Defense.handle(defenseString, delay)
 
+    if not AutoFight.Settings.defense then
+        return
+    end
+
     if AutoFight.State.Recovery then
         AutoFight.State.Recovery = false
 
@@ -120,8 +134,5 @@ function AutoFight.Defense.handle(defenseString, delay)
         return
     end
 
-    AutoFight.Defense.schedule(
-        defense,
-        delay or AutoFight.Config.DefenseDelay
-    )
+    AutoFight.Defense.schedule(defense, delay or AutoFight.Settings.defensedelay)
 end
