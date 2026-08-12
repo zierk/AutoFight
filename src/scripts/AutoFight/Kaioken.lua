@@ -31,16 +31,19 @@ function AutoFight.Kaioken.stop(reason)
     end
 
     AutoFight.debug(
-        "Stopping Kaioken"
+        "Attempting to stop Kaioken"
         .. (reason and " - " .. reason or "")
     )
 
     send("kaioken 0")
-
-    AutoFight.State.Kaioken = false
-    AutoFight.State.KaiokenLevel = 0
 end
 
+function AutoFight.Kaioken.confirmStopped()
+    AutoFight.State.Kaioken = false
+    AutoFight.State.KaiokenLevel = 0
+
+    AutoFight.debug("Kaioken successfully stopped.")
+end
 
 function AutoFight.Kaioken.checkStamina()
     if not AutoFight.State.Kaioken then
