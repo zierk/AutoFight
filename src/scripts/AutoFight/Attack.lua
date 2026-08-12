@@ -1,3 +1,5 @@
+AutoFight.Attack.Tried = AutoFight.Attack.Tried or {}
+
 function AutoFight.Attack.resetTried()
     AutoFight.Attack.Tried = {}
 end
