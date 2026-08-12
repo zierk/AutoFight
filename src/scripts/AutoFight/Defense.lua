@@ -4,16 +4,12 @@ AutoFight.Defense.Timer = AutoFight.Defense.Timer or nil
 AutoFight.Defense.Pending = AutoFight.Defense.Pending or nil
 
 function AutoFight.Defense.getPriority()
-    if AutoFight.State.Stamina
-        < AutoFight.Settings.staminathreshold then
-
-        AutoFight.debug("Low stamina - using recovery defense priority.")
-
+    if AutoFight.State.RecoveryMode then
+        AutoFight.debug("Recovery Mode - using recovery defense priority.")
         return AutoFight.Settings.recoverypriority
     end
 
-    AutoFight.debug("Stamina healthy - using TECH BLOCK priority.")
-
+    AutoFight.debug("Using TECH BLOCK defense priority.")
     return AutoFight.Settings.defensepriority
 end
 

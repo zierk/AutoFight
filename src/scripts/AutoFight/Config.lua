@@ -18,6 +18,7 @@ AutoFight.Config.Defaults = {
     kaiokenstaminathreshold = 50,
 
     staminathreshold = 75,
+    recoverypldelta = 2,
     defensedelay = 2.5,
 
     defensepriority = {
