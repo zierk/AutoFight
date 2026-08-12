@@ -12,5 +12,12 @@
               "regex": "^af set (\\w+) (.+)$",
               "script": "",
               "isFolder": "no"
+       },
+       {
+              "name": "STATUS",
+              "isActive": "yes",
+              "regex": "^af status$",
+              "script": "",
+              "isFolder": "no"
        }
 ]

@@ -120,6 +120,80 @@ function AutoFight.setSetting(name, value)
     )
 end
 
+function AutoFight.status()
+    AutoFight.echo("User Settings")
+
+    cecho(
+        "  Defense:          "
+        .. tostring(AutoFight.Settings.defense)
+        .. "\n"
+    )
+
+    cecho(
+        "  Attack:           "
+        .. tostring(AutoFight.Settings.attack)
+        .. "\n"
+    )
+
+    cecho(
+        "  Combos:           "
+        .. tostring(AutoFight.Settings.combos)
+        .. "\n"
+    )
+
+    cecho(
+        "  Stamina Threshold: "
+        .. tostring(AutoFight.Settings.staminathreshold)
+        .. "%\n"
+    )
+
+    cecho(
+        "  Defense Delay:     "
+        .. tostring(AutoFight.Settings.defensedelay)
+        .. "s\n"
+    )
+
+    cecho("\nDefense Priority:\n")
+
+    for i, defense in ipairs(AutoFight.Settings.defensepriority) do
+        cecho(
+            "  " .. i .. ". "
+            .. defense
+            .. "\n"
+        )
+    end
+
+    cecho("\nRecovery Priority:\n")
+
+    for i, defense in ipairs(AutoFight.Settings.recoverypriority) do
+        cecho(
+            "  " .. i .. ". "
+            .. defense
+            .. "\n"
+        )
+    end
+
+    cecho("\nAttack Priority:\n")
+
+    for i, attack in ipairs(AutoFight.Settings.attackpriority) do
+        cecho(
+            "  " .. i .. ". "
+            .. attack
+            .. "\n"
+        )
+    end
+
+    cecho("\nCombo Follow-up Priority:\n")
+
+    for i, attack in ipairs(AutoFight.Settings.combofollowuppriority) do
+        cecho(
+            "  " .. i .. ". "
+            .. attack
+            .. "\n"
+        )
+    end
+end
+
 
 
 function AutoFight.parseNumber(value)
