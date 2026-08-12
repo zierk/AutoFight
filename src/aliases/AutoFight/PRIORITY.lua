@@ -31,22 +31,7 @@ end
 
 -- Just "af priority defense"
 if #parts == 1 then
-    local list = AutoFight.getPriorityList(listName)
-
-    AutoFight.echo(
-        listName .. " priority"
-    )
-
-    for i, command in ipairs(list) do
-        cecho(
-            "  <cyan>"
-            .. i
-            .. "<reset>. "
-            .. command
-            .. "\n"
-        )
-    end
-
+    AutoFight.showPriority(listName)
     return
 end
 

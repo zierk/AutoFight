@@ -272,6 +272,27 @@ function AutoFight.removePriority(listName, command)
     )
 end
 
+function AutoFight.showPriority(listName)
+    local list = AutoFight.getPriorityList(listName)
+
+    if not list then
+        AutoFight.echo("Unknown priority list: " .. tostring(listName))
+        return
+    end
+
+    AutoFight.echo(listName .. " priority")
+
+    for i, command in ipairs(list) do
+        cecho(
+            "  <cyan>"
+            .. i
+            .. "<reset>. "
+            .. command
+            .. "\n"
+        )
+    end
+end
+
 function AutoFight.priorityHelp()
     AutoFight.echo("Priority Commands")
 
