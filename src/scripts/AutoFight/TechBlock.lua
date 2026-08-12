@@ -1,4 +1,6 @@
 function AutoFight.TechBlock.start()
+    AutoFight.Defense.cancel()
+    
     AutoFight.State.TechBlockActive = true
     AutoFight.State.TechBlockCombo = false
     AutoFight.State.TechAttackActive = false
