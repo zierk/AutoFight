@@ -44,27 +44,29 @@ function AutoFight.Defense.send(defense)
     send(defense)
 end
 
-function AutoFight.Defense.schedule(defense, delay)
+function AutoFight.Defense.handle(defenseString, delay)
+
+    if not AutoFight.Settings.defense then
+        return
+    end
+
+    if AutoFight.State.Stunned then
+        AutoFight.debug("Defense ignored - stunned.")
+        AutoFight.Defense.cancel()
+        return
+    end
 
     if AutoFight.Defense.Timer then
         killTimer(AutoFight.Defense.Timer)
 
-        AutoFight.debug(
-            "Cancelled previous defense: "
-            .. tostring(AutoFight.Defense.Pending)
-        )
+        AutoFight.debug("Cancelled previous defense: ".. tostring(AutoFight.Defense.Pending))
     end
 
     AutoFight.Defense.Timer = nil
     AutoFight.Defense.Pending = defense
 
     AutoFight.debug(
-        "Scheduled defense: "
-        .. tostring(defense)
-        .. " in "
-        .. tostring(delay)
-        .. "s"
-    )
+        "Scheduled defense: ".. tostring(defense) .. " in " .. tostring(delay) .. "s")
 
     if delay <= 0 then
         AutoFight.Defense.Pending = nil
