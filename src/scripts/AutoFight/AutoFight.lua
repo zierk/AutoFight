@@ -318,7 +318,8 @@ end
 
 
 function AutoFight.parseNumber(value)
-    local number, suffix = tostring(value):match("([%d%.]+)([KkMmBb]?)")
+    local number, suffix =
+        tostring(value):match("^([%d%.]+)(%a*)$")
 
     number = tonumber(number)
 
@@ -326,15 +327,31 @@ function AutoFight.parseNumber(value)
         return 0
     end
 
-    suffix = suffix:lower()
+    suffix = suffix:upper()
 
-    if suffix == "k" then
-        number = number * 1000
-    elseif suffix == "m" then
-        number = number * 1000000
-    elseif suffix == "b" then
-        number = number * 1000000000
+    local multipliers = {
+        K     = 1e3,
+        M     = 1e6,
+        B     = 1e9,
+        T     = 1e12,
+        QUAD  = 1e15,
+        QUINT = 1e18,
+        SEXT  = 1e21,
+        SEPT  = 1e24,
+        OCT   = 1e27,
+    }
+
+    if suffix == "" then
+        return number
     end
+
+    if multipliers[suffix] then
+        return number * multipliers[suffix]
+    end
+
+    AutoFight.debug(
+        "Unknown number suffix: " .. tostring(suffix)
+    )
 
     return number
 end
