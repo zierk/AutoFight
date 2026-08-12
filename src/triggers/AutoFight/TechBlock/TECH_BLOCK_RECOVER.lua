@@ -1,0 +1,1 @@
+AutoFight.TechBlock.endWindow(matches[2])

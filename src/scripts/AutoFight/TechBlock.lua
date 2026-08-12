@@ -1,5 +1,6 @@
 function AutoFight.TechBlock.start()
     AutoFight.State.TechBlockActive = true
+    AutoFight.State.TechBlockCombo = false
     AutoFight.State.TechAttackActive = false
 
     AutoFight.Attack.resetTried()
@@ -9,14 +10,17 @@ function AutoFight.TechBlock.start()
     tempTimer(1, function()
 
         if not AutoFight.State.TechBlockActive then
-            AutoFight.debug("Combo claimed TECH BLOCK - fallback cancelled.")
             return
         end
 
-        AutoFight.State.TechBlockActive = false
+        if AutoFight.State.TechBlockCombo then
+            AutoFight.debug("Combo detected - priority attack cancelled.")
+            return
+        end
+
         AutoFight.State.TechAttackActive = true
 
-        AutoFight.debug("No combo detected - starting TECH attack.")
+        AutoFight.debug("No combo detected - using attack priority during stun.")
 
         AutoFight.Attack.usePriority()
     end)
@@ -27,10 +31,22 @@ function AutoFight.TechBlock.claimCombo()
         return false
     end
 
-    AutoFight.State.TechBlockActive = false
+    AutoFight.State.TechBlockCombo = true
     AutoFight.State.TechAttackActive = false
 
-    AutoFight.debug("COMBO detected - TECH attack cancelled.")
+    AutoFight.debug("COMBO detected.")
 
     return true
+end
+
+function AutoFight.TechBlock.endWindow(target)
+    if not AutoFight.State.TechBlockActive then
+        return
+    end
+
+    AutoFight.State.TechBlockActive = false
+    AutoFight.State.TechBlockCombo = false
+    AutoFight.State.TechAttackActive = false
+
+    AutoFight.debug("TECH BLOCK ended - ".. tostring(target).. " regained movement.")
 end
