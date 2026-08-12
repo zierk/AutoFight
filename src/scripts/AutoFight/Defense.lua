@@ -97,11 +97,11 @@ function AutoFight.Defense.handle(defenseString, delay)
         return
     end
 
-    if AutoFight.State.Recovery then
-        AutoFight.State.Recovery = false
+    if AutoFight.State.SkipNextDefense then
+        AutoFight.State.SkipNextDefense = false
 
         AutoFight.debug(
-            "Allowing hit, will resume defense next round."
+            "Skipping defense to recover timing."
         )
 
         AutoFight.Defense.cancel()
