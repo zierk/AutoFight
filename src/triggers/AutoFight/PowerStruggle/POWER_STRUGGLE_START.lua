@@ -1,0 +1,1 @@
+AutoFight.PowerStruggle.start(matches[2])
