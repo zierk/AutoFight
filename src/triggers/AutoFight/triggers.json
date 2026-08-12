@@ -20,46 +20,6 @@
               "script": ""
        },
        {
-              "name": "TECH BLOCK STUN",
-              "isActive": "yes",
-              "isFolder": "no",
-              "multiline": "no",
-              "multilineDelta": "0",
-              "matchall": "no",
-              "filter": "no",
-              "fireLength": "0",
-              "highlight": "no",
-              "highlightFG": "#ff0000",
-              "highlightBG": "#ffff00",
-              "patterns": [
-                     {
-                            "pattern": "^\\* TECH BLOCK bonus! (.*) is stunned!$",
-                            "type": "regex"
-                     }
-              ],
-              "script": ""
-       },
-       {
-              "name": "TECH BLOCK ATTACK HANDLER",
-              "isActive": "yes",
-              "isFolder": "no",
-              "multiline": "no",
-              "multilineDelta": "0",
-              "matchall": "no",
-              "filter": "no",
-              "fireLength": "0",
-              "highlight": "no",
-              "highlightFG": "#ff0000",
-              "highlightBG": "#ffff00",
-              "patterns": [
-                     {
-                            "pattern": "^You can't use (.+) for another \\d+(?:\\.\\d+)? second\\(s\\)!$",
-                            "type": "regex"
-                     }
-              ],
-              "script": ""
-       },
-       {
               "name": "KAMEHAMEHA FIRE",
               "isActive": "yes",
               "isFolder": "no",
