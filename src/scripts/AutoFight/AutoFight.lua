@@ -16,25 +16,6 @@ AutoFight.Stamina = AutoFight.Stamina or 100
 
 
 
-function AutoFight.usePriorityAttack()
-    for _, attack in ipairs(AutoFight.Config.AttackPriority) do
-        if not AutoFight.TriedAttacks[attack] then
-            AutoFight.TriedAttacks[attack] = true
-            AutoFight.debug("Trying attack: " .. attack)
-
-            if attack == "kamehameha" then
-                enableTrigger("KAMEHAMEHA FIRE")
-            end
-
-            send(attack)
-            return
-        end
-    end
-
-    AutoFight.debug("No priority attacks left. Defaulting to sweep.")
-    send("sweep")
-end
-
 function AutoFight.echo(message)
   cecho("\n<magenta>[<cyan>AutoFight<magenta>]<reset> " .. tostring(message).."\n")
 end

@@ -24,7 +24,19 @@
               "isFolder": "no"
        },
        {
+              "name": "Attack",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+              {
               "name": "Combo",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+              {
+              "name": "TechBlock",
               "isActive": "yes",
               "script": "",
               "isFolder": "no"

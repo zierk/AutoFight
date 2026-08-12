@@ -1,0 +1,1 @@
+AutoFight.TechBlock.start()

@@ -7,7 +7,7 @@ AutoFight.State.MaxPL = AutoFight.State.MaxPL or 0
 AutoFight.State.EnemyPL = AutoFight.State.EnemyPL or 0
 
 AutoFight.State.Recovery = AutoFight.State.Recovery or false
-AutoFight.State.TechBlock = AutoFight.State.TechBlock or false
+AutoFight.State.TechBlockActive = AutoFight.State.TechBlockActive or false
 AutoFight.State.TechAttackActive = AutoFight.State.TechAttackActive or false
 
 AutoFight.State.Renzoku = AutoFight.State.Renzoku or false
