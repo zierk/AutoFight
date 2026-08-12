@@ -14,6 +14,11 @@ function AutoFight.Defense.getPriority()
 end
 
 function AutoFight.Defense.send(defense)
+    if AutoFight.State.Stunned then
+        AutoFight.debug("Defense cancelled - stunned.")
+        return
+    end
+
     if AutoFight.State.PowerStruggle then
         AutoFight.debug("Defense cancelled - PowerStruggle active.")
         return

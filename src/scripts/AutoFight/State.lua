@@ -1,5 +1,6 @@
 AutoFight.State.InCombat = AutoFight.State.InCombat or false
 
+AutoFight.State.Stunned = AutoFight.State.Stunned or false
 AutoFight.State.Stamina = AutoFight.State.Stamina or 100
 AutoFight.State.CurrentPL = AutoFight.State.CurrentPL or 0
 AutoFight.State.MaxPL = AutoFight.State.MaxPL or 0
