@@ -5,12 +5,15 @@ function AutoFight.Attack.resetTried()
 end
 
 function AutoFight.Attack.usePriority()
-    for _, attack in ipairs(AutoFight.Config.AttackPriority) do
+    if not AutoFight.Settings.attack then
+        return
+    end
+
+    for _, attack in ipairs(AutoFight.Settings.attackpriority) do
         if not AutoFight.Attack.Tried[attack] then
             AutoFight.Attack.Tried[attack] = true
 
             AutoFight.debug("Trying attack: " .. attack)
-
             send(attack)
             return
         end
