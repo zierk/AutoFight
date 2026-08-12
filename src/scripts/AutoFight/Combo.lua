@@ -1,3 +1,5 @@
+AutoFight.Combo.TriedFollowups = AutoFight.Combo.TriedFollowups or {}
+
 function AutoFight.Combo.run(combo)
     local startDelay = AutoFight.Config.ComboStartDelay
     local commandDelay = AutoFight.Config.ComboCommandDelay
@@ -27,7 +29,11 @@ function AutoFight.Combo.resetFollowups()
 end
 
 function AutoFight.Combo.useFollowup()
-    for _, attack in ipairs(AutoFight.Config.ComboFollowupPriority) do
+    if not AutoFight.Settings.combos then
+        return
+    end
+
+    for _, attack in ipairs(AutoFight.Settings.combofollowuppriority) do
         if not AutoFight.Combo.TriedFollowups[attack] then
             AutoFight.Combo.TriedFollowups[attack] = true
 
