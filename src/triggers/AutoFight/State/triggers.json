@@ -124,7 +124,7 @@
               "script": ""
        },
        {
-              "name": "STUN STOP",
+              "name": "STUN START",
               "isActive": "yes",
               "isFolder": "no",
               "multiline": "no",
