@@ -10,8 +10,10 @@ AutoFight.Config.Defaults = {
     combos = true,
     defense = true,
     attack = true,
+
+    autoburst = true,
     
-    kaioken = true,
+    kaioken = false,
     kaiokenlevel = 2,
     kaiokenstaminathreshold = 50,
 
