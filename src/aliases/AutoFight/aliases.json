@@ -7,6 +7,13 @@
               "isFolder": "no"
        },
        {
+              "name": "PRIORITY",
+              "isActive": "yes",
+              "regex": "^af priority(?:\\s+(.*))?$",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
               "name": "SET",
               "isActive": "yes",
               "regex": "^af set (\\w+) (.+)$",

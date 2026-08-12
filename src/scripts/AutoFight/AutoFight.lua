@@ -194,6 +194,105 @@ function AutoFight.status()
     end
 end
 
+function AutoFight.getPriorityList(name)
+    name = name:lower()
+
+    local lists = {
+        defense = "defensepriority",
+        recovery = "recoverypriority",
+        attack = "attackpriority",
+        combo = "combofollowuppriority",
+    }
+
+    local key = lists[name]
+
+    if not key then
+        return nil
+    end
+
+    return AutoFight.Settings[key]
+end
+
+function AutoFight.addPriority(listName, command)
+    local list = AutoFight.getPriorityList(listName)
+
+    if not list then
+        AutoFight.echo("Unknown priority list: " .. listName)
+        return
+    end
+
+    command = command:lower()
+
+    -- Don't allow duplicates
+    for _, existing in ipairs(list) do
+        if existing:lower() == command then
+            AutoFight.echo(command .. " is already in " .. listName .. " priority.")
+            return
+        end
+    end
+
+    table.insert(list, command)
+
+    AutoFight.saveSettings()
+
+    AutoFight.echo(
+        "Added " .. command .. " to "
+        .. listName .. " priority."
+    )
+end
+
+function AutoFight.removePriority(listName, command)
+    local list = AutoFight.getPriorityList(listName)
+
+    if not list then
+        AutoFight.echo("Unknown priority list: " .. listName)
+        return
+    end
+
+    command = command:lower()
+
+    for i, existing in ipairs(list) do
+        if existing:lower() == command then
+            table.remove(list, i)
+
+            AutoFight.saveSettings()
+
+            AutoFight.echo(
+                "Removed " .. command .. " from "
+                .. listName .. " priority."
+            )
+
+            return
+        end
+    end
+
+    AutoFight.echo(
+        command .. " was not found in "
+        .. listName .. " priority."
+    )
+end
+
+function AutoFight.priorityHelp()
+    AutoFight.echo("Priority Commands")
+
+    cecho("  af priority <list> add <command>\n")
+    cecho("  af priority <list> remove <command>\n")
+    cecho("\n")
+
+    cecho("Available Lists:\n")
+    cecho("  defense\n")
+    cecho("  recovery\n")
+    cecho("  attack\n")
+    cecho("  combo\n")
+    cecho("\n")
+
+    cecho("Examples:\n")
+    cecho("  af priority attack add uppercut\n")
+    cecho("  af priority attack remove blast\n")
+    cecho("  af priority defense remove deflect\n")
+    cecho("  af priority combo add spiritbomb\n")
+end
+
 
 
 function AutoFight.parseNumber(value)
