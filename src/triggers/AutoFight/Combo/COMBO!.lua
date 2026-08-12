@@ -1,0 +1,1 @@
+AutoFight.Combo.run(matches[2])
