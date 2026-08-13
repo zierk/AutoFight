@@ -6,6 +6,7 @@ end
 
 AutoFight.State.SkipNextDefense = false
 AutoFight.State.InCombat = false
+AutoFight.State.PoweringUp = false
 AutoFight.State.PowerStruggle = false
 AutoFight.State.TechBlockActive = false
 AutoFight.State.TechAttackActive = false

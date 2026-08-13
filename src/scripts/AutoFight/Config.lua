@@ -11,15 +11,19 @@ AutoFight.Config.Defaults = {
     defense = true,
     attack = true,
 
+    staminathreshold = 75,
+    recoverypldelta = 2,
+    defensedelay = 2.5,
+
     autoburst = true,
     
     kaioken = false,
     kaiokenlevel = 2,
     kaiokenstaminathreshold = 50,
 
-    staminathreshold = 75,
-    recoverypldelta = 2,
-    defensedelay = 2.5,
+    powerup = true,
+    powerupplthreshold = 20,
+    powerupstaminathreshold = 30,
 
     defensepriority = {
         "parry high",

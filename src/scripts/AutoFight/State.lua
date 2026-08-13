@@ -20,6 +20,8 @@ AutoFight.State.PowerStruggleDistance = AutoFight.State.PowerStruggleDistance or
 AutoFight.State.Kaioken = AutoFight.State.Kaioken or false
 AutoFight.State.KaiokenLevel = AutoFight.State.KaiokenLevel or 0
 
+AutoFight.State.PoweringUp = AutoFight.State.PoweringUp or false
+
 function AutoFight.State.updateRecoveryMode()
     local staminaLow =
         AutoFight.State.Stamina < AutoFight.Settings.staminathreshold
@@ -43,5 +45,48 @@ function AutoFight.State.updateRecoveryMode()
         else
             AutoFight.debug("Recovery Mode: OFF")
         end
+    end
+end
+
+function AutoFight.State.checkPowerUp()
+    if not AutoFight.Settings.powerup then
+        AutoFight.State.PoweringUp = false
+        return
+    end
+
+    if not AutoFight.State.InCombat then
+        AutoFight.State.PoweringUp = false
+        return
+    end
+
+    if AutoFight.State.MaxPL <= 0 then
+        return
+    end
+
+    local plPercent =
+        (AutoFight.State.CurrentPL / AutoFight.State.MaxPL) * 100
+
+    local missingPL = 100 - plPercent
+
+    local shouldPowerUp =
+        AutoFight.State.Stamina > AutoFight.Settings.powerupstaminathreshold
+        and missingPL > AutoFight.Settings.powerupplthreshold
+
+    if shouldPowerUp then
+        if not AutoFight.State.PoweringUp then
+            AutoFight.State.PoweringUp = true
+
+            AutoFight.debug(
+                string.format(
+                    "PowerUp ON - PL %.1f%%, Stamina %.1f%%",
+                    plPercent,
+                    AutoFight.State.Stamina
+                )
+            )
+
+            send("power up")
+        end
+    else
+        AutoFight.State.PoweringUp = false
     end
 end
