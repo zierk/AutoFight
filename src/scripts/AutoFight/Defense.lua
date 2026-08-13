@@ -44,7 +44,7 @@ function AutoFight.Defense.send(defense)
     send(defense)
 end
 
-function AutoFight.Defense.schedule(defenseString, delay)
+function AutoFight.Defense.schedule(defense, delay)
 
     if not AutoFight.Settings.defense then
         return
