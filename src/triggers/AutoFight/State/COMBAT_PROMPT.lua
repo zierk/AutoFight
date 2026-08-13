@@ -8,4 +8,5 @@ if not AutoFight.State.InCombat then
     AutoFight.debug("Combat state: ON")
 end
 
+AutoFight.State.updateRecoveryMode()
 AutoFight.State.checkPowerUp()
