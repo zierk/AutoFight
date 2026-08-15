@@ -120,6 +120,26 @@
               "script": ""
        },
        {
+              "name": "POWER UP INT",
+              "isActive": "yes",
+              "isFolder": "no",
+              "multiline": "no",
+              "multilineDelta": "0",
+              "matchall": "no",
+              "filter": "no",
+              "fireLength": "0",
+              "highlight": "no",
+              "highlightFG": "#ff0000",
+              "highlightBG": "#ffff00",
+              "patterns": [
+                     {
+                            "pattern": "^\\* Your concentration breaks! You lose control of your energy!$",
+                            "type": "regex"
+                     }
+              ],
+              "script": ""
+       },
+       {
               "name": "RENZOKU START",
               "isActive": "yes",
               "isFolder": "no",
