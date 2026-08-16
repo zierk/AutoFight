@@ -9,6 +9,11 @@ function AutoFight.Combo.run(combo)
 
     for command in combo:gmatch("%S+") do
         local cmd = command
+
+        if cmd == "ts" then
+            cmd = "tailstab"
+        end
+
         local delay = startDelay + (i * commandDelay)
 
         tempTimer(delay, function()
