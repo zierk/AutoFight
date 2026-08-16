@@ -20,24 +20,28 @@
               "script": ""
        },
        {
-              "name": "END COMBAT",
-              "isActive": "yes",
-              "isFolder": "no",
-              "multiline": "no",
-              "multilineDelta": "0",
-              "matchall": "no",
-              "filter": "no",
-              "fireLength": "0",
-              "highlight": "no",
-              "highlightFG": "#ff0000",
-              "highlightBG": "#ffff00",
-              "patterns": [
-                     {
-                            "pattern": "^\\* (.*) is DEAD!$",
-                            "type": "regex"
-                     }
-              ],
-              "script": ""
+       "name": "END COMBAT",
+       "isActive": "yes",
+       "isFolder": "no",
+       "multiline": "no",
+       "multilineDelta": "0",
+       "matchall": "no",
+       "filter": "no",
+       "fireLength": "0",
+       "highlight": "no",
+       "highlightFG": "#ff0000",
+       "highlightBG": "#ffff00",
+       "patterns": [
+              {
+              "pattern": "^\\* (.*) is DEAD!$",
+              "type": "regex"
+              },
+              {
+              "pattern": "^\\* You are DEAD!$",
+              "type": "regex"
+              }
+       ],
+       "script": ""
        },
        {
               "name": "BURST",
